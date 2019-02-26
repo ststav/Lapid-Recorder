@@ -1,3 +1,4 @@
+import * as FileSaver from "file-saver";
 import * as React from 'react';
 import {RecorderRTC} from "../recorderRtc/RecorderRTC";
 import {RecorderSettings} from "../RecorderSettings/RecorderSettings";
@@ -33,19 +34,29 @@ class App extends React.Component<IAppProps, IAppState> {
             settings: new RecorderSettings(),
         };
         this.recorderRTC = new RecorderRTC(this.state.settings);
+        this.saveTextFile = this.saveTextFile.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     public render() {
-        const toggle=(event:React.MouseEvent<HTMLBodyElement,MouseEvent>)=>this.toggle(event);
         return (
-            <body onClick={toggle}>
-            {this.state.recorderState}
+            <body>
+            <div onClick={this.toggle}>
+                <div onClick={this.saveTextFile}>download!!!</div>
+                {this.state.recorderState}
+            </div>
             </body>
         );
     }
 
-    private toggle (event: React.MouseEvent<HTMLBodyElement,MouseEvent>) {
-        return this.setState({recorderState:EState.Recording});
+    public saveTextFile() {
+        const fileParams = {type: "video/webm"};
+        const blob = new Blob(["Hello, world!"], fileParams);
+        FileSaver.saveAs(blob, "hello world.webm");
+    }
+
+    private toggle(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        return this.setState((prevState) => ({recorderState: EState.Recording}));
         this.recorderRTC.start();
     };
 }
