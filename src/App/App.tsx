@@ -14,7 +14,7 @@ interface IAppProps {
     mediaFramerates?: string,
     mediaBitrates?: string,
     recordingMedia?: string,
-    mediaContainerFormat?: string,
+    mediaContainerFormat?: string
 }
 
 interface IAppState {
